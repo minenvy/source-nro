@@ -43,7 +43,7 @@ namespace NRO_Server.DatabaseManager
                     
                     Server.Gi().Logger.Print("Loading Database...");
                     #region Read Table Task
-                    command.CommandText = "SELECT * FROM `taskoption`";
+                    command.CommandText = "SELECT * FROM `tasks`";
                     var reader = command.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -72,78 +72,127 @@ namespace NRO_Server.DatabaseManager
                         {
                             short id = reader.GetInt16(0);
                             string name = reader.GetString(1);
-                            short gender = reader.GetInt16(2);
-                            string detail = reader.GetString(3);
-                            List<string> subNames = JsonConvert.DeserializeObject<List<string>>(reader.GetString(4));
-                            List<short> counts = JsonConvert.DeserializeObject<List<short>>(reader.GetString(5));
-                            List<string> contentInfo = JsonConvert.DeserializeObject<List<string>>(reader.GetString(6));
-                            short gold = reader.GetInt16(7);
-                            short gem = reader.GetInt16(8);
-                            short tNSM = reader.GetInt16(9);
+                            string detail = reader.GetString(2);
+                            List<string> subNames = JsonConvert.DeserializeObject<List<string>>(reader.GetString(3));
+                            List<short> counts = JsonConvert.DeserializeObject<List<short>>(reader.GetString(4));
+                            List<string> contentInfo = JsonConvert.DeserializeObject<List<string>>(reader.GetString(5));
+              // short gold = reader.GetInt16(7);
+              // short gem = reader.GetInt16(8);
+              // short tNSM = reader.GetInt16(9);
 
-                            switch (gender)
-                            {
-                                case 0:
-                                    {
-                                        if (!Cache.Gi().TASK_TEMPLATES_0.ContainsKey(id))
-                                        {
-                                            Cache.Gi().TASK_TEMPLATES_0.Add(id, new TaskTemplate()
-                                            {
-                                                Id = id,
-                                                Name = name,
-                                                Gender = gender,
-                                                Detail = detail,
-                                                SubNames = subNames,
-                                                Counts = counts,
-                                                ContentInfo = contentInfo,
-                                                Gold = gold,
-                                                Gem = gem,
-                                                TNSM = tNSM,
-                                            });
-                                        }
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        if (!Cache.Gi().TASK_TEMPLATES_1.ContainsKey(id))
-                                        {
-                                            Cache.Gi().TASK_TEMPLATES_1.Add(id, new TaskTemplate()
-                                            {
-                                                Id = id,
-                                                Name = name,
-                                                Gender = gender,
-                                                Detail = detail,
-                                                SubNames = subNames,
-                                                Counts = counts,
-                                                ContentInfo = contentInfo,
-                                                Gold = gold,
-                                                Gem = gem,
-                                                TNSM = tNSM,
-                                            });
-                                        }
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        if (!Cache.Gi().TASK_TEMPLATES_2.ContainsKey(id))
-                                        {
+              if (!Cache.Gi().TASK_TEMPLATES_0.ContainsKey(id))
+              {
+                Cache.Gi().TASK_TEMPLATES_0.Add(id, new TaskTemplate()
+                {
+                  Id = id,
+                  Name = name,
+                  Gender = 0,
+                  Detail = detail,
+                  SubNames = subNames,
+                  Counts = counts,
+                  ContentInfo = contentInfo,
+                  Gold = 0,
+                  Gem = 0,
+                  TNSM = 0,
+                });
+              }
+
+              if (!Cache.Gi().TASK_TEMPLATES_1.ContainsKey(id))
+              {
+                Cache.Gi().TASK_TEMPLATES_1.Add(id, new TaskTemplate()
+                {
+                  Id = id,
+                  Name = name,
+                  Gender = 1,
+                  Detail = detail,
+                  SubNames = subNames,
+                  Counts = counts,
+                  ContentInfo = contentInfo,
+                  Gold = 0,
+                  Gem = 0,
+                  TNSM = 0,
+                });
+              }
+
+              if (!Cache.Gi().TASK_TEMPLATES_2.ContainsKey(id))
+              {
                                             Cache.Gi().TASK_TEMPLATES_2.Add(id, new TaskTemplate()
                                             {
                                                 Id = id,
                                                 Name = name,
-                                                Gender = gender,
+                                                Gender = 2,
                                                 Detail = detail,
                                                 SubNames = subNames,
                                                 Counts = counts,
                                                 ContentInfo = contentInfo,
-                                                Gold = gold,
-                                                Gem = gem,
-                                                TNSM = tNSM,
+                                                Gold = 0,
+                                                Gem = 0,
+                                                TNSM = 0,
                                             });
                                         }
-                                        break;
-                                    }
-                            }
+
+                            // switch (gender) {
+                            //     case 0:
+                            //         {
+                            //             if (!Cache.Gi().TASK_TEMPLATES_0.ContainsKey(id))
+                            //             {
+                            //                 Cache.Gi().TASK_TEMPLATES_0.Add(id, new TaskTemplate()
+                            //                 {
+                            //                     Id = id,
+                            //                     Name = name,
+                            //                     Gender = gender,
+                            //                     Detail = detail,
+                            //                     SubNames = subNames,
+                            //                     Counts = counts,
+                            //                     ContentInfo = contentInfo,
+                            //                     Gold = gold,
+                            //                     Gem = gem,
+                            //                     TNSM = tNSM,
+                            //                 });
+                            //             }
+                            //             break;
+                            //         }
+                            //     case 1:
+                            //         {
+                            //             if (!Cache.Gi().TASK_TEMPLATES_1.ContainsKey(id))
+                            //             {
+                            //                 Cache.Gi().TASK_TEMPLATES_1.Add(id, new TaskTemplate()
+                            //                 {
+                            //                     Id = id,
+                            //                     Name = name,
+                            //                     Gender = gender,
+                            //                     Detail = detail,
+                            //                     SubNames = subNames,
+                            //                     Counts = counts,
+                            //                     ContentInfo = contentInfo,
+                            //                     Gold = gold,
+                            //                     Gem = gem,
+                            //                     TNSM = tNSM,
+                            //                 });
+                            //             }
+                            //             break;
+                            //         }
+                            //     case 2:
+                            //         {
+                            //             if (!Cache.Gi().TASK_TEMPLATES_2.ContainsKey(id))
+                            //             {
+                            //                 Cache.Gi().TASK_TEMPLATES_2.Add(id, new TaskTemplate()
+                            //                 {
+                            //                     Id = id,
+                            //                     Name = name,
+                            //                     Gender = gender,
+                            //                     Detail = detail,
+                            //                     SubNames = subNames,
+                            //                     Counts = counts,
+                            //                     ContentInfo = contentInfo,
+                            //                     Gold = gold,
+                            //                     Gem = gem,
+                            //                     TNSM = tNSM,
+                            //                 });
+                            //             }
+                            //             break;
+                            //         }
+                            // }
 
                         }
                     }
@@ -277,7 +326,7 @@ namespace NRO_Server.DatabaseManager
 
                     #region Read Table limitPower
 
-                    command.CommandText = "SELECT * FROM `limitPower`";
+                    command.CommandText = "SELECT * FROM `limitpower`";
                     reader = command.ExecuteReader();
                     if (reader.HasRows)
                         while (reader.Read())

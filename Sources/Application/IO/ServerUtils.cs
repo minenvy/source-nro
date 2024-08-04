@@ -10,16 +10,44 @@ using System.Globalization;
 using NRO_Server.Application.Helper;
 using NRO_Server.Application.Threading;
 using NRO_Server.DatabaseManager;
+using System.Reflection;
 
 namespace NRO_Server.Application.IO
 {
     public class ServerUtils
     {
-        public static string ProjectDir(string path)
+
+    static DirectoryInfo FindProjectDirectory(DirectoryInfo directory)
+    {
+      while (directory != null)
+      {
+        if (directory.GetFiles("*.csproj").Any())
         {
-            return $"{Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."))}/{path}";
+          return directory;
         }
-        private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 00, DateTimeKind.Utc);
+        directory = directory.Parent;
+      }
+      return null;
+    }
+    public static string ProjectDir(string path)
+    {
+      string exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+      DirectoryInfo directory = new DirectoryInfo(exePath);
+
+      DirectoryInfo projectDirectory = FindProjectDirectory(directory);
+
+      if (projectDirectory != null)
+      {
+        Console.WriteLine($"Project Directory: {projectDirectory.FullName}");
+        return projectDirectory.FullName + "/" + path;
+      }
+      else
+      {
+        Console.WriteLine("Project directory not found.");
+        return "";
+      }
+    }
+    private static readonly DateTime Jan1st1970 = new DateTime(1970, 1, 1, 0, 0, 00, DateTimeKind.Utc);
 
         public static byte[] ConvertArraySByteToByte(sbyte[] data)
         {
@@ -89,6 +117,7 @@ namespace NRO_Server.Application.IO
         {
             try
             {
+                Console.WriteLine(path);
                 return File.ReadAllBytes(path);
             }
             catch (Exception e)
